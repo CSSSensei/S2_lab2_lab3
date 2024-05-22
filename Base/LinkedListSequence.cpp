@@ -1,0 +1,1 @@
+#include "../Sequence/LinkedListSequence.h"
