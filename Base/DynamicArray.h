@@ -30,6 +30,21 @@ public:
         }
     }
 
+    DynamicArray<T> Concat(const DynamicArray<T> &otherArray) {
+        DynamicArray<T> result;
+        result.Resize(length + otherArray.length);
+
+        for (int i = 0; i < length; i++) {
+            result.array[i] = array[i];
+        }
+
+        for (int i = 0; i < otherArray.length; i++) {
+            result.array[length + i] = otherArray.array[i];
+        }
+
+        return result;
+    }
+
     //Удаление объекта
     ~DynamicArray(); //деструктор
     void Delete_DynamicArray(); //удаление массива
