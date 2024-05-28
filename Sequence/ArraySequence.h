@@ -76,7 +76,7 @@ public:
             throw IndexOutOfRange();
 
         T item = dynamicArray.Get(dynamicArray.GetLength() - 1);
-        dynamicArray.Resize(dynamicArray.GetLength() - 1);
+        dynamicArray.ChangeLength(dynamicArray.GetLength() - 1);
         return item;
     }//Удаляет последний элемент в последовательности и возвращает его
     void Remove(int from, int to) {
@@ -89,14 +89,14 @@ public:
             dynamicArray[i - removeCount] = dynamicArray[i];
         }
 
-        dynamicArray.Resize(dynamicArray.GetLength() - removeCount);
+        dynamicArray.ChangeLength(dynamicArray.GetLength() - removeCount);
     }//Удаляет с элемента с индексом from до элемента с индексом to включительно
     void Append(T item) {
-        dynamicArray.Resize(dynamicArray.GetLength() + 1);
+        dynamicArray.ChangeLength(dynamicArray.GetLength() + 1);
         dynamicArray[dynamicArray.GetLength() - 1] = item;
     }//дабавляет элемент в конец последовательности(при необходимости выделяет доп. ячейки)
     void Prepend(T item) {
-        dynamicArray.Resize(dynamicArray.GetLength() + 1);
+        dynamicArray.ChangeLength(dynamicArray.GetLength() + 1);
         for (int i = dynamicArray.GetLength() - 1; i > 0; i--) {
             dynamicArray[i] = dynamicArray[i - 1];
         }
@@ -105,7 +105,7 @@ public:
     void InsertAt(T item, int index) {
         if (index < 0 || index > this->GetLength()) { throw IndexOutOfRange(); }
 
-        dynamicArray.Resize(dynamicArray.GetLength() + 1);
+        dynamicArray.ChangeLength(dynamicArray.GetLength() + 1);
         for (int i = dynamicArray.GetLength() - 1; i > index; i--) {
             dynamicArray[i] = dynamicArray[i - 1];
         }

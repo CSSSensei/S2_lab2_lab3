@@ -23,23 +23,25 @@ void constructor_1_DA() {
     int arr[] = {1, 2, 3, 4, 5};
     DynamicArray<int> d(arr, 5);
     assert(d.GetLength() == 5);
-    assert(d.GetSize() == 6);
+    assert(d.GetSize() == 10);
     assert(d.Get(3) == 4);
     d.Resize(8);
     assert(d.GetSize() == 10);
-    assert(d.GetLength() == 8);
+    assert(d.GetLength() == 5);
     d.Set(3, 10);
     assert(d.Get(3) == 10);
     d.Resize(0);
     assert(d.GetLength() == 0);
     assert(d.GetSize() == 0);
+    d.Resize(2);
+    assert(d.GetSize() == 4);
     d.Delete_DynamicArray();
 }
 
 void constructor_2_DA() {
     DynamicArray<int> arr(10);
-    assert(arr.GetSize() == 12);
-    assert(arr.GetLength() == 10);
+    assert(arr.GetSize() == 20);
+    assert(arr.GetLength() == 0);
     arr.Delete_DynamicArray();
 }
 
@@ -47,7 +49,8 @@ void constructor_3_DA() {
     int arr[] = {1, 2, 3, 4, 5};
     DynamicArray<int> d(arr, 5);
     DynamicArray<int> b(d);
-    assert(b.GetSize() == 6);
+    assert(b.GetSize() == 10);
+    assert(b.GetLength() == 5);
     assert(b.Get(2) == 3);
     assert(b.Get(1) == 2);
     d.Delete_DynamicArray();
@@ -73,7 +76,9 @@ void Get_DA() {
 void GetSize_DA() {
     int arr[] = {1, 2, 3, 4, 5};
     DynamicArray<int> d(arr, 5);
-    assert(d.GetSize() == 6);
+    assert(d.GetSize() == 10);
+    d.ChangeLength(3);
+    assert(d.GetLength() == 3);
     d.Delete_DynamicArray();
 }
 
@@ -96,14 +101,17 @@ void Set_DA() {
 void Resize_DA() {
     int arr[] = {1, 2, 3, 4, 5};
     DynamicArray<int> d(arr, 5);
-    assert(d.GetSize() == 6);
-    d.Resize(10);
-    assert(d.GetSize() == 12);
-    assert(d.GetLength() == 10);
+    assert(d.GetSize() == 10);
+    d.Resize(20);
+    assert(d.GetSize() == 40);
+    d.Resize(30);
+    assert(d.GetSize() == 40);
+    assert(d.GetLength() == 5);
     d.Resize(3);
     for (int i = 1; i < 3; i++) {
         assert(d[i - 1] == i);
     }
+    assert(d.GetSize() == 6);
     d.Delete_DynamicArray();
 }
 

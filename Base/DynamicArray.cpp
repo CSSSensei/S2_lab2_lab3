@@ -5,52 +5,63 @@
 #include <iostream>
 
 template<class T>
-void DynamicArray<T>::Resize(int newLenght /* подразумевается место для пользователя*/) {
-    int ConstMemory = int(0.25 * newLenght); //будем увеличивать память пачками
+void DynamicArray<T>::Resize(int newSize /* подразумевается место для пользователя*/) {
 
-    if (newLenght < 0) {
+    if (newSize < 0) { // неправильный размер массива
         throw IndexOutOfRange();
-    }// неправильный размер массива
+    }
 
-    if (newLenght == 0) {
+    if (newSize == 0) { // удаление массива
         delete[] array;
         array = nullptr;
         size = 0;
         length = 0;
         return;
-    }// удаление массива
+    }
 
-    if (newLenght == length) { return; }// длина не изменится
+    if (newSize == size) { return; } // длина не изменится
 
-    if (newLenght < length) {
-        length = newLenght;
-        return;
-    }// укорачивание массива
-
-    if (newLenght > 0 && length == 0) {
-        T *new_array = new T[newLenght + ConstMemory];
+    if (newSize < length) {
+        length = newSize;
+    }
+    if (newSize * 4 < size) { // укорачивание массива
+        size = newSize * 2;
+        T* new_array = new T[size];
+        for (int i = 0; i < length; i++) {
+            new_array[i] = array[i];
+        }
         delete[] array;
-        length = newLenght;
-        size = newLenght + ConstMemory;
         array = new_array;
         return;
-    }//увеличение размера массива 0 длины
+    }
 
-    if (newLenght > length) {
-        if (newLenght >= size) {
-            T *new_array = new T[newLenght + ConstMemory];
-            for (int i = 0; i < length; i++) {
-                new_array[i] = array[i];
-            }
-            delete[] array;
-            length = newLenght;
-            size = newLenght + ConstMemory;
-            array = new_array;
-        } else {
-            length = newLenght;
-        }
+    if (newSize > 0 && length == 0) { //увеличение размера массива 0 длины
+        size = newSize * 2;
+        T* new_array = new T[size];
+        delete[] array;
+        array = new_array;
         return;
-    }// увеличение длины
+    }
+
+    if (newSize > size) { // увеличение длины
+        size = newSize * 2;
+        T* new_array = new T[size];
+        for (int i = 0; i < length; i++) {
+            new_array[i] = array[i];
+        }
+        delete[] array;
+        array = new_array;
+    }
+}
+
+
+template<class T>
+void DynamicArray<T>::ChangeLength(int newLength /* подразумевается место для пользователя*/) {
+    if (newLength < 0) { // неправильный размер массива
+        throw IndexOutOfRange();
+    }
+    Resize(newLength);
+    length = newLength;
 }
 
 
@@ -62,7 +73,7 @@ DynamicArray<T>::DynamicArray() {
 }
 
 template<class T>
-DynamicArray<T>::DynamicArray(T *items, int count) {
+DynamicArray<T>::DynamicArray(T* items, int count) {
     array = nullptr;
     size = 0;
     length = 0;
@@ -70,6 +81,7 @@ DynamicArray<T>::DynamicArray(T *items, int count) {
     for (int i = 0; i < count; i++) {
         array[i] = items[i];
     }
+    length = count;
 }
 
 template<class T>

@@ -71,7 +71,7 @@ void decomposition_AS() {
 
 void function_AS() {
     srand(4541);
-    for (int i = 10; i < 11; i++) {
+    for (int i = 10; i < 10000; i++) {
         auto arr = new int[i];
         for (int j = 0; j < i; j++) {
             arr[j] = rand();
@@ -125,7 +125,7 @@ void constructors_LLS() {
     }
     LLS1.Delete_LinkedListSequene();
 
-    std::wcout << L"Проверка конструкторов LLS прошла 10000 тестов " << std::endl;
+    std::wcout << L"Проверка конструкторов LLS прошла 1000 тестов " << std::endl;
 }
 
 void decomposition_LLS() {
@@ -147,7 +147,7 @@ void decomposition_LLS() {
         delete[] arr;
     }
 
-    std::wcout << L"Проверка деконструкторов LLS прошла 10000 тестов" << std::endl;
+    std::wcout << L"Проверка деконструкторов LLS прошла 1000 тестов" << std::endl;
 }
 
 void function_LLS() {

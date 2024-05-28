@@ -1,8 +1,17 @@
-#include <iostream>
+//            _   ___ __         __           __
+//           / | / (_) /______  / /__  ____  / /______
+//          /  |/ / / //_/ __ \/ / _ \/ __ \/ //_/ __ \
+//         / /|  / / ,< / /_/ / /  __/ / / / ,< / /_/ /
+//        /_/ |_/_/_/|_|\____/_/\___/_/ /_/_/|_|\____/
+//           __ _  ___ ___  / /  (_)   (_)___(_)__
+//          /  ' \/ -_) _ \/ _ \/ /   / / __/ (_-<
+//         /_/_/_/\__/ .__/_//_/_/   /_/\__/_/___/
+//                  /_/
+
 
 #ifndef S3_LABORATORY_WORK_2_DYNAMICARRAY_H
 #define S3_LABORATORY_WORK_2_DYNAMICARRAY_H
-
+#include <iostream>
 
 template<class T>
 class DynamicArray {
@@ -57,7 +66,7 @@ public:
 
     //Операции над параметрами массива
     void Set(int index, T value); //Задает элемент по индексу
-    void Resize(int newLength); //Изменяет длину массива доступную пользователю
+    void Resize(int newSize); //Изменяет длину массива доступную пользователю
     DynamicArray<T> &operator=(DynamicArray<T> dynamicArray) {
         std::swap(array, dynamicArray.array);
         size = dynamicArray.size;
@@ -72,6 +81,8 @@ public:
 
         return array[index];
     }
+
+    void ChangeLength(int newLength);
 };
 
 
