@@ -39,7 +39,7 @@ public:
         }
     }
 
-    DynamicArray<T> Concat(const DynamicArray<T> &otherArray) {
+    DynamicArray<T> Concat(const DynamicArray<T> &otherArray) const{
         DynamicArray<T> result;
         result.Resize(length + otherArray.length);
 
@@ -59,9 +59,9 @@ public:
     void Delete_DynamicArray(); //удаление массива
 
     //Декомпозиция
-    T &Get(int index); //возвращает элемент по индексу
-    int GetSize();//Общее число ячеек, под которые выделили память
-    int GetLength();//Число ячеек, которые может использовать пользователь
+    T &Get(int index) const; //возвращает элемент по индексу
+    int GetSize() const;//Общее число ячеек, под которые выделили память
+    int GetLength() const;//Число ячеек, которые может использовать пользователь
 
 
     //Операции над параметрами массива
@@ -165,13 +165,6 @@ public:
             throw IndexOutOfRange();
         }
         return array[index];
-    }
-
-    void print() const {
-        for (size_t i = 0; i < length; i++) {
-            std::cout << array[i] << " ";
-        }
-        std::cout << "\n";
     }
 };
 

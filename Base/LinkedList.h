@@ -29,11 +29,11 @@ public:
     void remove(int left_border, int right_border);
 
     //декомпозиция
-    T GetFirst();//Возвращает первый элемент
-    T GetLast();//Возвращает последний элемент
-    T &Get(int index);//Возвращает элемент по индексу
-    LinkedList<T> GetSubList(int startIndex, int endIndex);//Возваращет список элементов в исходных пределах
-    int GetLength();//Возвращает длину
+    T GetFirst() const;//Возвращает первый элемент
+    T GetLast() const;//Возвращает последний элемент
+    T &Get(int index) const;//Возвращает элемент по индексу
+    LinkedList<T> GetSubList(int startIndex, int endIndex) const;//Возваращет список элементов в исходных пределах
+    int GetLength() const;//Возвращает длину
 
     //Операции
     void Append(T item); //Добавление элемента в конец списка

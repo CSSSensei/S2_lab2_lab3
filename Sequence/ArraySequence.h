@@ -33,16 +33,16 @@ public:
         dynamicArray.Delete_DynamicArray();
     }//функция удаления послдовательности
     //Декомпозиция
-    T GetFirst() {
+    T GetFirst() const {
         return dynamicArray.Get(0);
     }//Возвращает первй элемент
-    T GetLast() {
+    T GetLast() const {
         return dynamicArray.Get(dynamicArray.GetLength() - 1);
     }//Возвращает последний элемент
-    T &Get(int index) {
+    T &Get(int index) const {
         return dynamicArray.Get(index);
     }//Возвращает элемент по индексу
-    ArraySequence<T> *GetSubsequence(int startIndex, int endIndex) {
+    ArraySequence<T> *GetSubsequence(int startIndex, int endIndex) const {
         if (startIndex >= dynamicArray.GetLength() || endIndex >= dynamicArray.GetLength() || startIndex < 0 ||
             endIndex < 0) {
             throw IndexOutOfRange();
@@ -63,10 +63,10 @@ public:
 
         return new_arraySequence;
     }//Получить список из всех элементов, начиная с startIndex и заканчивая endIndex
-    int GetLength() {
+    int GetLength() const {
         return dynamicArray.GetLength();
     }//Возвращает длину последовательности
-    int GetSize() {
+    int GetSize() const {
         return dynamicArray.GetSize();
     }
 

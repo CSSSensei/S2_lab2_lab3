@@ -48,21 +48,21 @@ LinkedList<T>::LinkedList(const LinkedList<T> &list) {
 }
 
 template<class T>
-T LinkedList<T>::GetFirst() {
+T LinkedList<T>::GetFirst() const {
     if (head_element == nullptr) { throw IndexOutOfRange(); }
 
     return head_element->value;
 }
 
 template<class T>
-T LinkedList<T>::GetLast() {
+T LinkedList<T>::GetLast() const {
     if (end_element == nullptr) { throw IndexOutOfRange(); }
 
     return end_element->value;
 }
 
 template<class T>
-T &LinkedList<T>::Get(int index) {
+T &LinkedList<T>::Get(int index) const {
     if (index < 0 || index >= len) { throw IndexOutOfRange(); }
 
     struct element *cell = head_element;
@@ -72,7 +72,7 @@ T &LinkedList<T>::Get(int index) {
 }
 
 template<class T>
-LinkedList<T> LinkedList<T>::GetSubList(int startIndex, int endIndex) {
+LinkedList<T> LinkedList<T>::GetSubList(int startIndex, int endIndex) const {
     if (startIndex >= len || endIndex >= len || startIndex < 0 || endIndex < 0) {
         throw IndexOutOfRange();
     }
@@ -89,7 +89,7 @@ LinkedList<T> LinkedList<T>::GetSubList(int startIndex, int endIndex) {
 }
 
 template<class T>
-int LinkedList<T>::GetLength() {
+int LinkedList<T>::GetLength() const {
     return len;
 }
 

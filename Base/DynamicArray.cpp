@@ -106,7 +106,7 @@ DynamicArray<T>::DynamicArray(int newLength, int needSize) {
 }
 
 template<class T>
-T &DynamicArray<T>::Get(int index) {
+T &DynamicArray<T>::Get(int index) const {
     if (index < 0 || index >= length) {
         throw IndexOutOfRange();
     }
@@ -124,12 +124,12 @@ void DynamicArray<T>::Set(int index, T value) {
 }
 
 template<class T>
-int DynamicArray<T>::GetSize() {
+int DynamicArray<T>::GetSize() const {
     return size;
 }
 
 template<class T>
-int DynamicArray<T>::GetLength() {
+int DynamicArray<T>::GetLength() const {
     return length;
 }
 

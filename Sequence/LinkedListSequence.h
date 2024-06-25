@@ -31,29 +31,29 @@ public:
     }//функция удаление последовательности
 
     //Декомпозиция
-    T GetFirst() {
+    T GetFirst() const {
         if (listSequence.GetLength() == 0) {
             throw IndexOutOfRange();
         }
         return listSequence.GetFirst();
     }//Возвращает первый элемент
-    T GetLast() {
+    T GetLast() const {
         if (listSequence.GetLength() == 0) {
             throw IndexOutOfRange();
         }
         return listSequence.GetLast();
     }//Возвращает последний элемент
 
-    T& Get(int index){
+    T& Get(int index) const {
         return listSequence.Get(index);
     }//Возвращает элемент по индексу
-    LinkedListSequence<T>* GetSubsequence(int startIndex, int endIndex){
+    LinkedListSequence<T>* GetSubsequence(int startIndex, int endIndex) const {
         //auto *new_LinkedList = new LinkedList<T>;
         auto new_LinkedList = listSequence.GetSubList(startIndex, endIndex);
         auto *new_LinkedListSequence = new LinkedListSequence<T>(new_LinkedList);
         return new_LinkedListSequence;
     }//Получить список из всех элементов, начиная с startIndex и заканчивая endIndex
-    int GetLength(){
+    int GetLength() const {
         return listSequence.GetLength();
     }
 
@@ -67,7 +67,7 @@ public:
     void InsertAt(T item, int index){
         listSequence.InsertAt(item, index);
     }//Вставляет элемент в заданную позицию
-    LinkedListSequence<T>* Concat(Sequence<T> *list){
+    LinkedListSequence<T>* Concat(Sequence<T> *list) {
         auto *new_LinkedList = new LinkedListSequence<T> (*this);
         for (int i = 0; i < list->GetLength(); i++){
             new_LinkedList->Append(list->Get(i));
