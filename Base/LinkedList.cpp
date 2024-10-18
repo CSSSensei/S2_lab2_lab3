@@ -2,33 +2,33 @@
 
 template<class T>
 void LinkedList<T>::Append(T item) {
-    auto *new_cell = new struct element;
+    UnqPtr<element> new_cell(new element);
     new_cell->value = item;
-    new_cell->next_element = nullptr;
+    new_cell->next_element.reset(nullptr);
 
-    if (head_element == nullptr) { //случай, когда список пустой
-        head_element = new_cell;
-        end_element = new_cell;
+    if (!head_element) { // Если список пустой
+        head_element.reset(new_cell.release());
+        end_element = head_element.get();
         len = 1;
         return;
     }
 
-    end_element->next_element = new_cell;
-    end_element = new_cell;
+    end_element->next_element.reset(new_cell.release());
+    end_element = end_element->next_element.get();
     len++;
 }
 
 template<class T>
 LinkedList<T>::LinkedList() {
     len = 0;
-    head_element = nullptr;
+    head_element.reset();
     end_element = nullptr;
 }
 
 template<class T>
 LinkedList<T>::LinkedList(T *items, int count) {
     len = 0;
-    head_element = nullptr;
+    head_element.reset();
     end_element = nullptr;
 
     for (int i = 0; i < count; i++) {
@@ -39,35 +39,31 @@ LinkedList<T>::LinkedList(T *items, int count) {
 template<class T>
 LinkedList<T>::LinkedList(const LinkedList<T> &list) {
     len = 0;
-    head_element = nullptr;
+    head_element.reset();
     end_element = nullptr;
-    struct element *cell = list.head_element;
-    for (int i = 0; i < list.len; i++, cell = cell->next_element) {
+    for (element* cell = list.head_element.get(); cell; cell = cell->next_element.get()) {
         Append(cell->value);
     }
 }
 
 template<class T>
 T LinkedList<T>::GetFirst() const {
-    if (head_element == nullptr) { throw IndexOutOfRange(); }
-
+    if (!head_element) throw IndexOutOfRange();
     return head_element->value;
 }
 
 template<class T>
 T LinkedList<T>::GetLast() const {
-    if (end_element == nullptr) { throw IndexOutOfRange(); }
-
+    if (!end_element) throw IndexOutOfRange();
     return end_element->value;
 }
 
 template<class T>
 T &LinkedList<T>::Get(int index) const {
-    if (index < 0 || index >= len) { throw IndexOutOfRange(); }
+    if (index < 0 || index >= len) throw IndexOutOfRange();
 
-    struct element *cell = head_element;
-    for (int i = 0; i < index; i++, cell = cell->next_element);
-
+    element *cell = head_element.get();
+    for (int i = 0; i < index; i++, cell = cell->next_element.get());
     return cell->value;
 }
 
@@ -77,11 +73,10 @@ LinkedList<T> LinkedList<T>::GetSubList(int startIndex, int endIndex) const {
         throw IndexOutOfRange();
     }
 
-    LinkedList<T> new_list = LinkedList<T>();
-    auto *cell = new struct element;
-    cell = head_element;
-    for (int i = 0; i < startIndex; i++, cell = cell->next_element);
-    for (int i = startIndex; i <= endIndex; i++, cell = cell->next_element) {
+    LinkedList<T> new_list;
+    auto cell = head_element.get();
+    for (int i = 0; i < startIndex; i++, cell = cell->next_element.get());
+    for (int i = startIndex; i <= endIndex; i++, cell = cell->next_element.get()) {
         new_list.Append(cell->value);
     }
 
@@ -95,53 +90,61 @@ int LinkedList<T>::GetLength() const {
 
 template<class T>
 void LinkedList<T>::Prepend(T item) {
-    auto *new_cell = new struct element;
+    UnqPtr<element> new_cell(new element);
     new_cell->value = item;
+    new_cell->next_element = std::move(head_element);
 
-    if (head_element == nullptr) {
-        end_element = new_cell;
+    head_element = std::move(new_cell);
+    if (!end_element) {
+        end_element = head_element.get();
     }
-
-    new_cell->next_element = head_element;
-    head_element = new_cell;
     len++;
 }
 
 template<class T>
 void LinkedList<T>::InsertAt(T item, int index) {
-    if (index > len || index < 0) { throw IndexOutOfRange(); }
+    if (index > len || index < 0) throw IndexOutOfRange();
 
     if (index == 0) {
         Prepend(item);
         return;
-    }
-    else if (index == len) {
+    } else if (index == len) {
         Append(item);
         return;
-    }
-    else {
-        auto *new_cell = new struct element;
+    } else {
+        UnqPtr<element> new_cell(new element);
         new_cell->value = item;
-        struct element *previous_cell = head_element;
-        for (int i = 0; i < index - 1; i++, previous_cell = previous_cell->next_element);
-        new_cell->next_element = previous_cell->next_element;
-        previous_cell->next_element = new_cell;
+        element *previous_cell = head_element.get();
+        for (int i = 0; i < index - 1; i++, previous_cell = previous_cell->next_element.get());
+        new_cell->next_element = std::move(previous_cell->next_element);
+        previous_cell->next_element.reset(new_cell.release());
         len++;
     }
 }
 
 template<class T>
-LinkedList<T> LinkedList<T>::Concat(LinkedList<T> *list) {
-    LinkedList<T> new_list = LinkedList<T>();
+void LinkedList<T>::Set(int index, T item) {
+    if (index >= len || index < 0) throw IndexOutOfRange();
 
-    struct element *new_cell = head_element;
-    for (int i = 0; i < len; i++, new_cell = new_cell->next_element) {
+    element *cell = head_element.get();
+    for (int i = 0; i < index; i++, cell = cell->next_element.get());
+
+    cell->value = item;
+}
+
+template<class T>
+LinkedList<T> LinkedList<T>::Concat(LinkedList<T> *list) {
+    LinkedList<T> new_list;
+    element* new_cell = head_element.get();
+    while (new_cell) {
         new_list.Append(new_cell->value);
+        new_cell = new_cell->next_element.get();
     }
 
-    new_cell = list->head_element;
-    for (int i = 0; i < list->len; i++, new_cell = new_cell->next_element) {
+    new_cell = list->head_element.get();
+    while (new_cell) {
         new_list.Append(new_cell->value);
+        new_cell = new_cell->next_element.get();
     }
 
     return new_list;
@@ -154,11 +157,14 @@ LinkedList<T>::~LinkedList() {
 
 template<class T>
 void LinkedList<T>::Delete_LinkedList() {
-    struct element *this_cell;
-    while (head_element != nullptr) {
-        this_cell = head_element;
-        head_element = head_element->next_element;
-        delete this_cell;
+    if (!head_element) {
+        return;
+    }
+    UnqPtr<element> current = std::move(head_element);
+    while (current) {
+        UnqPtr<element> next = std::move(current->next_element);
+        current.reset();
+        current = std::move(next);
     }
     end_element = nullptr;
     len = 0;
@@ -170,34 +176,41 @@ void LinkedList<T>::remove(int left_border, int right_border) {
         throw IndexOutOfRange();
     }
 
-    struct element *prev_cell = nullptr;
-    struct element *current_cell = head_element;
+    UnqPtr<element>* current = &head_element;
+    int index = 0;
 
-    // Переместимся к левой границе
-    for (int i = 0; i < left_border; ++i) {
-        prev_cell = current_cell;
-        current_cell = current_cell->next_element;
+    while (*current) {
+        if (index >= left_border && index <= right_border) {
+            UnqPtr<element> temp = std::move(*current);
+            *current = std::move(temp->next_element);
+            len--;
+
+            if (temp.get() == end_element) {
+                end_element = nullptr;
+            }
+            index++;
+            continue;
+        }
+        else if (index > right_border) {
+            break;
+        }
+        current = &(*current)->next_element;
+        index++;
+    }
+    if (len == 0) {
+        head_element.reset();
+        end_element = nullptr;
+    } else if (left_border == 0) {
+        head_element = std::move(*current);
     }
 
-    // Удалим элементы в границах
-    struct element *next_cell;
-    for (int i = left_border; i <= right_border; ++i) {
-        next_cell = current_cell->next_element;
-        delete current_cell;
-        current_cell = next_cell;
+    if (index >= len) {
+        UnqPtr<element>* iter = &head_element;
+        while (*iter) {
+            end_element = (*iter).get();
+            iter = &(*iter)->next_element;
+        }
     }
-
-    if (left_border == 0) {
-        head_element = current_cell;
-    } else {
-        prev_cell->next_element = current_cell;
-    }
-
-    if (right_border == len - 1) {
-        end_element = prev_cell;
-    }
-
-    len -= (right_border - left_border + 1);
 }
 
 

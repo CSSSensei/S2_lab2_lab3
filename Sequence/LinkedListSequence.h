@@ -1,7 +1,7 @@
 #ifndef LinkedListSequence_h
 #define LinkedListSequence_h
 
-#include "../Sequence.h"
+#include "Sequence.h"
 #include "../Base/LinkedList.cpp"
 
 template <class T>
@@ -67,6 +67,9 @@ public:
     void InsertAt(T item, int index){
         listSequence.InsertAt(item, index);
     }//Вставляет элемент в заданную позицию
+    void Set(int index, T item){
+        listSequence.Set(index, item);
+    }
     LinkedListSequence<T>* Concat(Sequence<T> *list) {
         auto *new_LinkedList = new LinkedListSequence<T> (*this);
         for (int i = 0; i < list->GetLength(); i++){

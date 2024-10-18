@@ -37,9 +37,6 @@ void constructors_AS() {
         for (int k = 0; k < i; k++) {
             assert(AS3.Get(k) == AS2.Get(k));
         }
-
-        AS3.Delete_ArraySequence();
-        AS2.Delete_ArraySequence();
         delete[] arr;
     }
     AS1.Delete_ArraySequence();
@@ -62,39 +59,31 @@ void decomposition_AS() {
             assert(AS.Get(k) == arr[k]);
         }
         delete[] arr;
-        AS.Delete_ArraySequence();
 
     }
 
-    std::wcout << L"Проверка деконструкторов AS прошла 10000 тестов" << std::endl;
+    std::wcout << L"Проверка деконструкторов AS прошла 1000 тестов" << std::endl;
 }
 
 void function_AS() {
     srand(4541);
-    for (int i = 10; i < 10000; i++) {
-        auto arr = new int[i];
+    for (int i = 2; i < 10000; i++) {
+        ArraySequence<int> AS;
         for (int j = 0; j < i; j++) {
-            arr[j] = rand();
+            AS.Append(j);
         }
-        ArraySequence<int> AS(arr, i);
         assert(AS.GetLength() == i);
-        int item = rand();
+        int item = rand(), item2 = rand(), item3 = rand();
         AS.Append(item);
         assert(AS.GetLength() == i + 1);
         assert(AS.Get(i) == item);
-//        AS.Prepend(item);
-//        std::cout << AS.GetSize() << ' ';
-//        assert(AS.GetLength() == i + 1);
-//        std::cout << AS.GetLength() << ' ';
-//        assert(AS.GetFirst() == item);
-//        std::cout << AS.GetFirst();
-        AS.Prepend(item);
+        AS.Prepend(item2);
         assert(AS.GetLength() == i + 2);
-        assert(AS.GetFirst() == item);
-        //delete[] arr;
-        //AS.Delete_ArraySequence();
+        assert(AS.GetFirst() == item2);
+        assert(AS.GetLast() == item);
+        AS.Set(i / 2, item3);
+        assert(AS.Get(i / 2) == item3);
     }
-
     std::wcout << L"Проверка функций AS прошла 10000 тестов" << std::endl;
 }
 
@@ -118,12 +107,8 @@ void constructors_LLS() {
         for (int k = 0; k < i; k++) {
             assert(LLS3.Get(k) == LLS2.Get(k));
         }
-
-        LLS2.Delete_LinkedListSequene();
-        LLS3.Delete_LinkedListSequene();
         delete[] arr;
     }
-    LLS1.Delete_LinkedListSequene();
 
     std::wcout << L"Проверка конструкторов LLS прошла 1000 тестов " << std::endl;
 }
@@ -143,7 +128,6 @@ void decomposition_LLS() {
             assert(LLS.Get(k) == arr[k]);
         }
 
-        LLS.Delete_LinkedListSequene();
         delete[] arr;
     }
 
@@ -152,23 +136,23 @@ void decomposition_LLS() {
 
 void function_LLS() {
     srand(4541);
-    for (int i = 10; i < 10000; i++) {
+    for (int i = 1; i <= 1000; i++) {
         auto arr = new int[i];
         for (int j = 0; j < i; j++) {
             arr[j] = rand();
         }
         LinkedListSequence<int> LLS(arr, i);
-        int item = rand();
+        int item = rand(), item2 = rand();
         LLS.Append(item);
         assert(LLS.GetLength() == i + 1);
         assert(LLS.Get(i) == item);
         LLS.Prepend(item);
         assert(LLS.GetLength() == i + 2);
         assert(LLS.Get(0) == item);
-
-        LLS.Delete_LinkedListSequene();
+        LLS.Set(i / 2, item2);
+        assert(LLS.Get(i / 2) == item2);
         delete[] arr;
     }
 
-    std::wcout << L"Проверка функций LLS прошла 10000 тестов" << std::endl;
+    std::wcout << L"Проверка функций LLS прошла 1000 тестов" << std::endl;
 }

@@ -12,76 +12,42 @@
 #ifndef S3_LABORATORY_WORK_2_DYNAMICARRAY_H
 #define S3_LABORATORY_WORK_2_DYNAMICARRAY_H
 #include <iostream>
+#include "../pointers/ShrdPtr.h"
+#include <memory>
 
 template<class T>
 class DynamicArray {
 private:
-    T *array;
-    int length; //на сколько элементов у пользователя есть доступ
-    int size; //на сколько элементов выделена память
+    ShrdPtr<T[]> array;
+    int length; // на сколько элементов у пользователя есть доступ
+    int size; // на сколько элементов выделена память
 public:
-    class IndexOutOfRange {
-    };
+    class IndexOutOfRange {};
 
-    // Создание объект
-    DynamicArray(); //создание пустого массива
-    DynamicArray(T *items, int count); //создает пустой массив и копирует элементы из исходного
-    explicit DynamicArray(int newSize); //создание пустого массива заданной длины
-    explicit DynamicArray(int newLength,
-                          int needSize);//Создание массива заданной длины со свободным местом needSize - newLenght
-    DynamicArray(const DynamicArray &dynArr) {
-        size = dynArr.size;
-        length = dynArr.length;
+    // Создание объекта
+    DynamicArray(); // создание пустого массива
+    DynamicArray(T *items, int count); // создает пустой массив и копирует элементы из исходного
+    explicit DynamicArray(int newSize); // создание пустого массива заданной длины
+    explicit DynamicArray(int newLength, int needSize); // Создание массива заданной длины со свободным местом needSize - newLenght
+    DynamicArray(const DynamicArray &dynArr);
 
-        array = new T[size];
-        for (int i = 0; i < length; i++) {
-            array[i] = dynArr.array[i];
-        }
-    }
+    DynamicArray<T> Concat(const DynamicArray<T> &otherArray) const;
 
-    DynamicArray<T> Concat(const DynamicArray<T> &otherArray) const{
-        DynamicArray<T> result;
-        result.Resize(length + otherArray.length);
+    // Удаление объекта
+    ~DynamicArray(); // деструктор
+    void Delete_DynamicArray(); // удаление массива
 
-        for (int i = 0; i < length; i++) {
-            result.array[i] = array[i];
-        }
-
-        for (int i = 0; i < otherArray.length; i++) {
-            result.array[length + i] = otherArray.array[i];
-        }
-
-        return result;
-    }
-
-    //Удаление объекта
-    ~DynamicArray(); //деструктор
-    void Delete_DynamicArray(); //удаление массива
-
-    //Декомпозиция
-    T &Get(int index) const; //возвращает элемент по индексу
-    int GetSize() const;//Общее число ячеек, под которые выделили память
-    int GetLength() const;//Число ячеек, которые может использовать пользователь
+    // Декомпозиция
+    T& Get(int index) const; // возвращает элемент по индексу
+    int GetSize() const; // Общее число ячеек, под которые выделили память
+    int GetLength() const; // Число ячеек, которые может использовать пользователь
 
 
-    //Операции над параметрами массива
-    void Set(int index, T value); //Задает элемент по индексу
-    void Resize(int newSize); //Изменяет длину массива доступную пользователю
-    DynamicArray<T> &operator=(DynamicArray<T> dynamicArray) {
-        std::swap(array, dynamicArray.array);
-        size = dynamicArray.size;
-        length = dynamicArray.length;
-        return *this;
-    }
-
-    T &operator[](int index) {
-        if (index < 0 || index >= length) {
-            throw IndexOutOfRange();
-        }
-
-        return array[index];
-    }
-
+    // Операции над параметрами массива
+    void Set(int index, T value); // Задает элемент по индексу
+    void Resize(int newSize); // Изменяет длину массива доступную пользователю
+    DynamicArray<T>& operator=(DynamicArray<T> dynamicArray);
+    T& operator[](int index);
     void ChangeLength(int newLength);
 };
 

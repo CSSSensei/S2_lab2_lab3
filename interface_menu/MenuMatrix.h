@@ -1,6 +1,6 @@
 #ifndef LABORATORY_WORK_2_MENUMATRIX_H
 #define LABORATORY_WORK_2_MENUMATRIX_H
-#include "Matrix.h"
+#include "../DataStructures/Matrix.h"
 #include <complex>
 #include <iostream>
 

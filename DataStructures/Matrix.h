@@ -1,4 +1,4 @@
-#include "Sequence/ArraySequence.h"
+#include "../Sequence/ArraySequence.h"
 #include <iostream>
 #include <valarray>
 #include <complex>

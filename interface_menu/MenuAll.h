@@ -8,13 +8,16 @@
 //         /_/_/_/\__/ .__/_//_/_/   /_/\__/_/___/
 //                  /_/
 
-#include "MenuAll.h"
-#include <iostream>
-#include "Tests/Tests_AS and LLS.h"
-#include "Tests/Tests_DA and LL.h"
+
+#ifndef LABORATORY_WORK_2_MENUALL_H
+#define LABORATORY_WORK_2_MENUALL_H
+#include "MenuMatrix.h"
+#include "MenuVector.h"
+#include "../Tests/Tests_Matrix.h"
+#include "../Tests/Tests_Vector.h"
+#include "../Tests/Tests_DA and LL.h"
+#include "../Tests/Tests_AS and LLS.h"
 #include "MenuSequence.h"
-#include "Tests/Tests_Vector.h"
-#include "Tests/Tests_Matrix.h"
 
 void menuAll() {
     int var;
@@ -55,3 +58,5 @@ void menuAll() {
             break;
     }
 }
+
+#endif //LABORATORY_WORK_2_MENUALL_H

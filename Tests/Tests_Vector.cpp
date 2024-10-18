@@ -4,7 +4,7 @@
 #include <complex>
 #include <cassert>
 #include "../Sequence/ArraySequence.h"
-#include "../Vector.h"
+#include "../DataStructures/Vector.h"
 
 void testVectorInitialization() {
 

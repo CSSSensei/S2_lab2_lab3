@@ -1,4 +1,4 @@
-#include "Sequence/ArraySequence.h"
+#include "../Sequence/ArraySequence.h"
 #include <cmath>
 #include <iostream>
 #include <complex>
@@ -26,7 +26,7 @@ public:
 
     //Удаление объекта
     ~Vector() {
-        vector.Delete_ArraySequence();
+        Delete_Vector();
     }
 
     void Delete_Vector() {

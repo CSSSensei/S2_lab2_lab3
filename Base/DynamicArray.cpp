@@ -12,8 +12,7 @@ void DynamicArray<T>::Resize(int newSize /* подразумевается ме�
     }
 
     if (newSize == 0) { // удаление массива
-        delete[] array;
-        array = nullptr;
+        array = ShrdPtr<T[]>();
         size = 0;
         length = 0;
         return;
@@ -26,32 +25,34 @@ void DynamicArray<T>::Resize(int newSize /* подразумевается ме�
     }
     if (newSize * 4 < size) { // укорачивание массива
         size = newSize * 2;
-        T* new_array = new T[size];
+        ShrdPtr<T[]> new_array(new T[size]);
         for (int i = 0; i < length; i++) {
             new_array[i] = array[i];
         }
-        delete[] array;
-        array = new_array;
+        array = std::move(new_array);
         return;
     }
 
     if (newSize > 0 && length == 0) { //увеличение размера массива 0 длины
         size = newSize * 2;
-        T* new_array = new T[size];
-        delete[] array;
-        array = new_array;
+        array = ShrdPtr<T[]>(new T[size]);
         return;
     }
 
     if (newSize > size) { // увеличение длины
         size = newSize * 2;
-        T* new_array = new T[size];
+        ShrdPtr<T[]> new_array(new T[size]);
         for (int i = 0; i < length; i++) {
             new_array[i] = array[i];
         }
-        delete[] array;
-        array = new_array;
+        array = std::move(new_array);
+        return;
     }
+//    ShrdPtr<T[]> new_array(new T[size]);
+//    for (int i = 0; i < length; i++) {
+//        new_array[i] = array[i];
+//    }
+//    array = std::move(new_array);
 }
 
 
@@ -60,49 +61,63 @@ void DynamicArray<T>::ChangeLength(int newLength /* подразумеваетс
     if (newLength < 0) { // неправильный размер массива
         throw IndexOutOfRange();
     }
-    Resize(newLength);
+    if (!(newLength < size && newLength * 4 > size)) Resize(newLength);
     length = newLength;
 }
 
 
 template<class T>
-DynamicArray<T>::DynamicArray() {
-    array = nullptr;
-    length = 0;
-    size = 0;
-}
+DynamicArray<T>::DynamicArray() : array(nullptr), length(0), size(0) {}
 
 template<class T>
-DynamicArray<T>::DynamicArray(T* items, int count) {
-    array = nullptr;
-    size = 0;
-    length = 0;
+DynamicArray<T>::DynamicArray(T* items, int count) : length(0), size(0) {
     Resize(count);
+    ShrdPtr<T[]> temp(new T[count]);
     for (int i = 0; i < count; i++) {
-        array[i] = items[i];
+        temp[i] = items[i];
     }
     length = count;
+    array = std::move(temp);
 }
 
 template<class T>
-DynamicArray<T>::DynamicArray(int newSize) {
-    if (newSize < 0) { newSize = 0; }
-
-    array = nullptr;
-    size = 0;
-    length = 0;
+DynamicArray<T>::DynamicArray(int newSize) : length(0), size(0) {
+    array = std::move(ShrdPtr<T[]>(new T[newSize]));
     Resize(newSize);
 }
 
 template<class T>
-DynamicArray<T>::DynamicArray(int newLength, int needSize) {
+DynamicArray<T>::DynamicArray(int newLength, int needSize) : length(newLength), size(needSize) {
     if (newLength < 0 || needSize < newLength) {
         throw IndexOutOfRange();
     }
-    std::unique_ptr<T[]> newArray(new T[needSize]);
-    array = std::move(newArray);
-    length = newLength;
-    size = needSize;
+    array = ShrdPtr<T[]>(new T[needSize]);
+}
+
+template<class T>
+DynamicArray<T>::DynamicArray(const DynamicArray& dynArr)
+        : length(dynArr.length),
+          size(dynArr.size),
+          array(ShrdPtr<T[]>(new T[dynArr.size])) {
+    for (int i = 0; i < length; i++) {
+        array[i] = dynArr.array[i];
+    }
+}
+
+template<class T>
+DynamicArray<T> DynamicArray<T>::Concat(const DynamicArray<T>& otherArray) const {
+    DynamicArray<T> result;
+    result.Resize(length + otherArray.length);
+
+    for (int i = 0; i < length; i++) {
+        result.array[i] = array[i];
+    }
+
+    for (int i = 0; i < otherArray.length; i++) {
+        result.array[length + i] = otherArray.array[i];
+    }
+
+    return result;
 }
 
 template<class T>
@@ -111,7 +126,7 @@ T &DynamicArray<T>::Get(int index) const {
         throw IndexOutOfRange();
     }
 
-    return array[index];
+    return const_cast<T&>(array[index]);
 }
 
 template<class T>
@@ -135,17 +150,25 @@ int DynamicArray<T>::GetLength() const {
 
 
 template<class T>
-void DynamicArray<T>::Delete_DynamicArray() {
-    delete[] array;
-    array = nullptr;
-    size = 0;
-    length = 0;
-}
+void DynamicArray<T>::Delete_DynamicArray() {}
 
 template<class T>
 DynamicArray<T>::~DynamicArray() {
-    delete[] array;
-    array = nullptr;
-    size = 0;
-    length = 0;
+    Delete_DynamicArray();
+}
+
+template<class T>
+DynamicArray<T>& DynamicArray<T>::operator=(DynamicArray<T> dynamicArray) {
+    std::swap(array, dynamicArray.array);
+    size = dynamicArray.size;
+    length = dynamicArray.length;
+    return *this;
+}
+
+template<class T>
+T& DynamicArray<T>::operator[](int index) {
+    if (index < 0 || index >= length) {
+        throw IndexOutOfRange();
+    }
+    return array[index];
 }

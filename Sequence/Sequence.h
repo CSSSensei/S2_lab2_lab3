@@ -29,6 +29,7 @@ public:
     virtual void Append(T item) = 0; //Добавление элемента в конец последовательности
     virtual void Prepend(T item) = 0; //Добавление элемента в начало последовательности
     virtual void InsertAt(T item, int index) = 0; //Вставка элемента в заданную позицию последовательности
+    virtual void Set(int index, T item) = 0;
     virtual Sequence <T>* Concat(Sequence <T> *list) = 0; //Сцепление двух последовательностей
 };
 
