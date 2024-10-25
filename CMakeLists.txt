@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 project(S3_laboratory_work_2)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 add_executable(S3_laboratory_work_2
         main.cpp
@@ -10,6 +10,9 @@ add_executable(S3_laboratory_work_2
         "Tests/Tests_AS and LLS.h"
         DataStructures/Vector.h
         "Tests/Tests_AS and LLS.cpp"
+        base/DynamicArray.h
+        Sequence/ArraySequence.h
+        base/LinkedList.h
         interface_menu/MenuVector.h
         interface_menu/MenuVector.cpp
         interface_menu/MenuMatrix.h
@@ -32,4 +35,10 @@ add_executable(S3_laboratory_work_2
         Sort/ISorter.h
         Sort/BubbleSort.h
         Sort/BatcherSort.h
+        Sort/QuickSort.h
+        Sort/SelectionSort.h
+        TestSort/MenuTest.h
+        interface_menu/MenuSort.h
+        TestSort/LoadTests.h
+        TestSort/GenerateData.h
 )

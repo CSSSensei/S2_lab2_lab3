@@ -10,7 +10,6 @@
 
 
 #include "MenuMatrix.h"
-#include "../Base/DynamicArray.cpp"
 #include "MenuSequence.h"
 
 int chooseTypeMatrix(){

@@ -18,7 +18,9 @@ enum class Command {
     Print,
     Invalid,
     GetFirst,
-    GetLast
+    GetLast,
+    Sort,
+    InputRandom
 };
 
 Command hash_command(const std::string &command);

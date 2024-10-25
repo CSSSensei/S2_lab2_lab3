@@ -1,5 +1,4 @@
 #include "Menu.h"
-#include "../Base/DynamicArray.cpp"
 
 int chooseTypeVector(){
     int type;

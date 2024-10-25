@@ -18,6 +18,8 @@
 #include "../Tests/Tests_DA and LL.h"
 #include "../Tests/Tests_AS and LLS.h"
 #include "MenuSequence.h"
+#include "../TestSort/MenuTest.h"
+#include "../TestSort/LoadTests.h"
 
 void menuAll() {
     int var;
@@ -26,6 +28,7 @@ void menuAll() {
           << L"\t2: Вектор\n"
           << L"\t3: Матрица\n"
           << L"\t4: Тесты\n"
+          << L"\t5: Тесты сортировок\n"
           << L"Введите число:";
     var = getNumberInput<int>();
 
@@ -54,6 +57,11 @@ void menuAll() {
             menuAll();
             break;
         }
+        case 5:
+            test_sort_main();
+            loadtestsort_main();
+            menuAll();
+            break;
         default:
             break;
     }

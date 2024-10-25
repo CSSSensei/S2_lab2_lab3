@@ -2,6 +2,7 @@
 #include "MenuSequence.h"
 #include "../Sequence/ArraySequence.h"
 #include "../Sequence/LinkedListSequence.h"
+#include "MenuSort.h"
 
 Command hash_command(const std::string &command) {
     static const std::unordered_map<std::string, Command> commandMap = {
@@ -15,6 +16,8 @@ Command hash_command(const std::string &command) {
             {"print",   Command::Print},
             {"getfirst", Command::GetFirst},
             {"getlast", Command::GetLast},
+            {"sort", Command::Sort},
+            {"randominp", Command::InputRandom}
     };
 
     auto it = commandMap.find(command);
@@ -45,7 +48,7 @@ void interactWithSequence(Sequence<T> *sequence) {
     T value;
     int index, l, r;
     while (true) {
-        std::cout << "Enter command (append, prepend, pop, remove, insert, subseq, print, getfirst, getlast, quit):\n  ";
+        std::cout << "Enter command (randominp, append, prepend, pop, remove, insert, subseq, print, getfirst, getlast, sort, quit):\n  ";
         std::cin >> commandStr;
         command = hash_command(commandStr);
         switch (command) {
@@ -100,7 +103,6 @@ void interactWithSequence(Sequence<T> *sequence) {
                 }
                 sub = sequence->GetSubsequence(l, r);
                 print(sub);
-                delete sub; // Clean up if the implementation returns a new sequence
                 break;
 
             case Command::GetFirst:
@@ -113,6 +115,20 @@ void interactWithSequence(Sequence<T> *sequence) {
 
             case Command::Print:
                 print(sequence);
+                break;
+
+            case Command::Sort:
+                interactWithSorting(sequence);
+                break;
+
+            case Command::InputRandom:
+                std::cout << "Enter the amount of random items to input\n";
+                l = getNumberInput<int>();
+                srand(time(0));
+                for (int i = 0; i < l; i++) {
+                    sequence->Append(rand());
+                }
+//                print(sequence);
                 break;
 
             default:

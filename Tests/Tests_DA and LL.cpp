@@ -2,7 +2,6 @@
 #include <cassert>
 #include "iostream"
 #include "../Base/DynamicArray.h"
-#include "../Base/DynamicArray.cpp"
 #include "../Base/LinkedList.h"
 #include "../Base/LinkedList.cpp"
 
